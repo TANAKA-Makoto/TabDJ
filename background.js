@@ -1,6 +1,9 @@
+// Import browser polyfill for cross-browser compatibility
+importScripts('browser-polyfill/browser-polyfill.min.js');
+
 var tabs = {};
 
-browser.extension.onConnect.addListener(function(port)
+chrome.runtime.onConnect.addListener(function(port)
 {
 	port.onMessage.addListener(function(msg)
 	{
@@ -34,7 +37,7 @@ browser.extension.onConnect.addListener(function(port)
 			
 			if (tabs[curTab].enabled == 0)
 			{
-				browser.tabCapture.capture(
+				chrome.tabCapture.capture(
 				{
 					audio: true,
 					video: false
@@ -75,14 +78,14 @@ browser.extension.onConnect.addListener(function(port)
 			
 			port.postMessage(msgdata);
 		}
-		else if (mst.type == 'resetall_request')
+		else if (msg.type == 'resetall_request')
 		{
 			
 		}
 	});
 });
 
-browser.tabs.onRemoved.addListener(function(tabid, removed) {
+chrome.tabs.onRemoved.addListener(function(tabid, removed) {
 	if (tabs[tabid])
 	{
 		delete tabs[tabid];
